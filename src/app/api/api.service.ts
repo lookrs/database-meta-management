@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
@@ -7,15 +7,18 @@ import {Observable} from 'rxjs';
 })
 export class ApiService {
 
-  constructor(private http: HttpClient) {}
+  private baseUrl: string = '/api/v1/';
+
+  constructor(private http: HttpClient) {
+  }
 
   // 通用的 GET 请求方法
   get<T>(url: string, params?: HttpParams, headers?: HttpHeaders): Observable<T> {
-    return this.http.get<T>(url, { params, headers });
+    return this.http.get<T>(this.baseUrl + url, {params, headers});
   }
 
   // 通用的 POST 请求方法
   post<T>(url: string, body: any, headers?: HttpHeaders): Observable<T> {
-    return this.http.post<T>(url, body, { headers });
+    return this.http.post<T>(this.baseUrl + url, body, {headers});
   }
 }
