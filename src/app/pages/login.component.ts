@@ -14,7 +14,7 @@ import {DbTypePipePipe} from '../pipes/db-type-pipe.pipe';
     ReactiveFormsModule
   ],
   template: `
-    <div class="row mt-2 ">
+    <div class="column mt-2 ">
       <div class="col-4 mx-auto shadow-sm p-2 ">
 
         <select class="form-select mb-2" aria-label="Default select example" [(ngModel)]="selectedValue"
@@ -46,7 +46,14 @@ import {DbTypePipePipe} from '../pipes/db-type-pipe.pipe';
           </button>
         </form>
       </div>
-
+      <div class="col-4 mx-auto bg-primary bg-opacity-10 shadow-sm p-2 mt-5">
+        <p class="lead">
+          本程序使用浏览器<span class="bg-info rounded">IndexedDB</span>保存第一次加载的数据<br>
+          更新可以按橙字重载<br>
+          <strong>数据库的访问：从后台程序所在的服务器发起访问</strong><br>
+          <small>当前支持pg与mysql</small>
+        </p>
+      </div>
     </div>
 
   `,
