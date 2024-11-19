@@ -2,18 +2,14 @@ import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {DbTypePipePipe} from '../pipes/db-type-pipe.pipe';
 import {MetaService} from '../service/meta.service';
-import {NgbDropdown, NgbDropdownMenu, NgbDropdownToggle} from '@ng-bootstrap/ng-bootstrap';
 import _ from 'lodash';
+import {async} from 'rxjs';
 
 @Component({
   selector: 'app-sql',
   standalone: true,
   imports: [
     FormsModule,
-    NgbDropdown,
-    NgbDropdownMenu,
-    NgbDropdownToggle,
-
   ],
   providers: [DbTypePipePipe,],
   template: `
@@ -22,38 +18,11 @@ import _ from 'lodash';
         <div class="col-9 .mx-auto flex-fill">
           <div class="col-6 mx-auto">
             <form class="d-flex mt-1 mb-1 " role="search">
-              <input class="form-control me-2 shadow-sm" type="search" placeholder="tables" aria-label="Search">
-              <div class="row">
+              <div class="d-flex mx-auto">
                 <div class="col">
-                  <div ngbDropdown class="d-inline-block">
-                    <button type="button" class="btn btn-outline-primary" id="dropdownForm1" ngbDropdownToggle>
-                      replace
-                    </button>
-                    <div ngbDropdownMenu aria-labelledby="dropdownForm1">
-                      <form class="px-2 py-3 ">
-                        <div class="form-check ">
-                          <input class="form-check-input" type="radio" value="name" name="flexRadioMethod"
-                                 id="flexRadioDefault3" [(ngModel)]="matchType" [ngModelOptions]="{standalone: true}"
-                                 checked>
-                          <label class="form-check-label" for="flexRadioDefault3">
-                            name
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" value="comment" name="flexRadioMethod"
-                                 id="flexRadioDefault4" [(ngModel)]="matchType" [ngModelOptions]="{standalone: true}">
-                          <label class="form-check-label" for="flexRadioDefault4">
-                            comment
-                          </label>
-                        </div>
-                        <button (click)="onReplace()" type="submit" class="btn btn-primary mt-2">confirm</button>
-
-                      </form>
-                    </div>
-                  </div>
+                  <button (click)="onReplace()" class="btn btn-primary mt-2">replace</button>
                 </div>
               </div>
-
             </form>
           </div>
         </div>
@@ -91,12 +60,15 @@ import _ from 'lodash';
 export class SqlComponent {
   inSql: string = '';
   outSql: string = '';
-  matchType: string = 'name';
 
   constructor(private metaService: MetaService) {
   }
 
-  async onReplace() {
+  onReplace = _.debounce(() => {
+    this.onReplaceTarget();
+  }, 500);
+
+  async onReplaceTarget() {
     if (!this.inSql) {
       return;
     }

@@ -3,6 +3,7 @@ import {Router, RouterLink, RouterOutlet} from '@angular/router';
 import {DbConnInfo} from './types/commType';
 import {MetaService} from './service/meta.service';
 import {IndexDbService} from './service/index-db.service';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-root',
@@ -61,9 +62,9 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  async onReload() {
+  onReload = _.debounce(async () => {
     await this.idbService.clearAllTableMetadata();
     await this.metaService.loadMetadata();
     this.metaService.displayMetadata.set([]);
-  }
+  }, 500);
 }

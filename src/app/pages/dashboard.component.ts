@@ -4,6 +4,8 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {MetaService} from '../service/meta.service';
 import {FormsModule} from '@angular/forms';
 import {IndexDbService} from '../service/index-db.service';
+import {async} from 'rxjs';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-dashboard',
@@ -95,9 +97,9 @@ import {IndexDbService} from '../service/index-db.service';
                    class="list-group-item list-group-item-action"
                    aria-current="true">
                   <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{ item.tableName }}</h5>
+                    <h5 class="mb-1 text-truncate">{{ item.tableName }}</h5>
                   </div>
-                  <small style="color: darkgrey">{{ item.tableComment }}</small>
+                  <small class="text-truncate" style="color: darkgrey">{{ item.tableComment }}</small>
                 </a>
               }
             </div>
@@ -143,8 +145,11 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  onSearchClick = _.debounce(() => {
+    this.onSearchClickTarget();
+  }, 500)
 
-  async onSearchClick(): Promise<void> {
+  async onSearchClickTarget(): Promise<void> {
     console.log(this.query)
     if (!this.query || this.query.length == 0) {
       await this.metaService.loadMetadata();
