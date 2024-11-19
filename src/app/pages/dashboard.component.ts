@@ -1,5 +1,5 @@
 import {Component, computed, OnInit, signal} from '@angular/core';
-import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {MetaService} from '../service/meta.service';
 import {FormsModule} from '@angular/forms';
@@ -126,7 +126,8 @@ import {IndexDbService} from '../service/index-db.service';
 export class DashboardComponent implements OnInit {
 
   constructor(private indexDbService: IndexDbService,
-              private metaService: MetaService) {
+              private metaService: MetaService,
+              private router: Router) {
 
   }
 
@@ -194,6 +195,8 @@ export class DashboardComponent implements OnInit {
         this.metaService.displayMetadata.set(tableMetadataDistinct)
       }
     }
+    // 搜索后选择结果的第一张表
+    this.router.navigate(['dashboard', 'meta', 0]);
 
   }
 
