@@ -97,7 +97,7 @@ export class SqlComponent {
   }
 
   async onReplace() {
-    if (!this.inSql){
+    if (!this.inSql) {
       return;
     }
     await this.metaService.loadMetadata();
@@ -113,11 +113,21 @@ export class SqlComponent {
 
   replaceSql(src: string, replacementMap: Map<string, string>): string {
     console.log('replaceSql');
-    const regex = new RegExp(_.join([...replacementMap.keys()], "|"), "gi");
+    let targetMap = this.sortMap(replacementMap);
+    const regex = new RegExp(_.join([...targetMap.keys()], "|"), "gi");
     const updatedText = src.replace(regex, match => {
       return replacementMap.get(match.toLowerCase()) || match;
     });
     console.log(updatedText);
     return updatedText;
+  }
+
+  sortMap(replacementMap: Map<string, string>): Map<string, string> {
+    const sortedArray = _.orderBy(
+      Array.from(replacementMap.entries()), // 转换 Map 为数组
+      [([key]) => key.length],    // 排序依据：按键的长度
+      ['desc']                   // 倒序
+    );
+    return new Map(sortedArray);
   }
 }
