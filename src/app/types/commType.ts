@@ -10,13 +10,20 @@ export interface Column {
   type: string;
   comment: string;
   nullable: boolean;
-  default: boolean;
+  defaultValue: string;
 }
 
-export interface tableMetadata {
+export interface TableMetadata {
   tableName: string;
   tableComment: string;
   columns: Column[];
+  columnNameForIdx?: string[];
+  columnCommentForIdx?: string[];
 }
 
-type DbType = 0 | 1 | 2
+export interface Supports {
+  dbType: number;
+  sampleUrl: string;
+}
+
+export type DbType = 0 | 1 | 2
